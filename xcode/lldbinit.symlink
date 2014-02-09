@@ -1,11 +1,24 @@
-# Recursive description of view hierarchy
-command regex rd 's/^[[:space:]]*$/po [[UIWindow keyWindow] recursiveDescription]/' 's/^(.+)$/po [%1 recursiveDescription]/'
+# recursive description of the views hierarchy
+# usage:	(lldb) rd				-- UIWindow keyWindow
+# 			(lldb) rd self.view		-- self.view
+#			(lldb) rd 0x8a2e3f0 	-- view at that address
 
-# AutoLayout trace
-command alias alt expr -O -- (NSString *)[[UIWindow keyWindow] _autolayoutTrace]
+command regex rd 's/^[[:space:]]*$/po [[UIApp keyWindow] recursiveDescription]/' 's/^(.+)$/po [%1 recursiveDescription]/'
 
-# Reveal
-command alias reveal_load_sim expr (void*)dlopen("/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib", 0x2);
-command alias reveal_load_dev expr (void*)dlopen([(NSString*)[(NSBundle*)[NSBundle mainBundle] pathForResource:@"libReveal" ofType:@"dylib"] cStringUsingEncoding:0x4], 0x2);
-command alias reveal_start expr (void)[(NSNotificationCenter*)[NSNotificationCenter defaultCenter] postNotificationName:@"IBARevealRequestStart" object:nil];
-command alias reveal_stop expr (void)[(NSNotificationCenter*)[NSNotificationCenter defaultCenter] postNotificationName:@"IBARevealRequestStop" object:nil];
+# auto layout trace - shows ambiguous layout
+# usage:	(lldb) alt				-- UIWindow keyWindow
+# 			(lldb) alt self.view	-- self.view 
+#			(lldb) alt 0x8a2e3f0	-- view at that address
+command regex alt 's/^[[:space:]]*$/po [[UIApp keyWindow] _autolayoutTrace]/' 's/^(.+)$/po [%1 _autolayoutTrace]/'
+
+# constraints for a view
+# usage: 	(lldb) cons self.view	-- view at that address
+
+command regex cons 's/^(.+)$/script lldb.debugger.HandleCommand("po [(id)%1 constraintsAffectingLayoutForAxis:0]"); lldb.debugger.HandleCommand("po [(id)%1 constraintsAffectingLayoutForAxis:1]")/'
+
+# same as above with H and V only constraints
+command regex hcons 's/^(.+)$/po [(id)%1 constraintsAffectingLayoutForAxis:0]/'
+command regex vcons 's/^(.+)$/po [(id)%1 constraintsAffectingLayoutForAxis:1]/'
+
+# print out BOOL as in p (BOOL)someValue
+command regex pb 's/^(.+)$/p (BOOL)%1/'
