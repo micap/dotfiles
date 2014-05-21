@@ -45,6 +45,12 @@ symlinked without extension into `$HOME` when you run `script/bootstrap`.
 
 ## what's inside
 
+Shell aliases i'm use to:
+* `g` for `git status`
+* `gu` for `git push` which is configured to only push the current branch.
+* `gd` for `git pull`
+* `m` for `mate`. 
+
 A lot of stuff. Seriously, a lot of stuff. Check them out in the file browser
 above and see what components may mesh up with you.
 [Fork it](https://github.com/holman/dotfiles/fork), remove what you don't
