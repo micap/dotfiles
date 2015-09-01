@@ -8,7 +8,7 @@ TEXT=$(cat "$1" | sed '/^#.*/d')
  
 if [ -n "$TEXT" ]
 then
-    echo "$NAME"': '$(cat "$1" | sed '/^#.*/d') > "$1"
+    echo "'$(cat "$1" | sed '/^#.*/d') > "$1"
     if [ -n "$DESCRIPTION" ] 
     then
        echo "" >> "$1"
